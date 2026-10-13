@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/* ─────────── Design tokens ─────────── */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --color-ink: #10110e; /* primary near-black section background */
+  --color-slate: #292c32; /* alternating dark-slate band */
+  --color-moss: #2d3937; /* deep green-grey band */
+  --color-banner: #454f45; /* announcement strip */
+  --color-cream: #ecead1; /* headline / body text */
+  --color-mute: #aeac9a; /* secondary text */
+  --color-neon: #6dff8a; /* signature accent */
+  --color-neon-deep: #075434; /* icon tile green */
+  --color-down: #ff5a5a; /* negative change */
+
+  /* dashboards (user + admin) */
+  --color-navy: #1b2234;
+  --color-navy-2: #252d44;
+  --color-canvas: var(--c-canvas);
+  --color-card: var(--c-card);
+  --color-line: var(--c-line);
+  --color-fg: var(--c-fg);
+  --color-soft: var(--c-soft);
+  --color-brand: #13a24d;
+  --color-brand-dark: #0e8840;
+  --color-brand-soft: #dff6e8;
+  --color-brand-soft2: #c9efd8;
+  --color-azure: #4f86e8;
+  --color-azure-dark: #3f74d3;
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee: marquee 48s linear infinite;
+  --animate-pop: pop 0.45s ease-out;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes pop {
+    0% { opacity: 0.35; transform: translateY(2px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* dashboard theme variables (light by default, `.dark` switched on by the Dark theme add-on) */
+:root {
+  --c-canvas: #e7eaf2;
+  --c-card: #ffffff;
+  --c-line: #e1e5ee;
+  --c-fg: #2a3144;
+  --c-soft: #6b7488;
+}
+html.dark {
+  --c-canvas: #12161f;
+  --c-card: #1b2130;
+  --c-line: #2b3347;
+  --c-fg: #e8ebf3;
+  --c-soft: #98a1b8;
+  color-scheme: dark;
+}
+html.compact .app-main { font-size: 0.95em; }
+html.compact .app-main td, html.compact .app-main th { padding-top: 0.45rem; padding-bottom: 0.45rem; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-neon);
+  color: #10110e;
+}
+
+/* Scroll-reveal helper (toggled by the Reveal component) */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hide scrollbars on horizontal strips */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─────────── Accessibility panel modes ─────────── */
+html.a11y-text {
+  font-size: 118%;
+}
+html.a11y-contrast {
+  --color-mute: #d9d7c0;
+  --color-slate: #1b1d22;
+  --color-moss: #1e2927;
+}
+html.a11y-contrast .border-cream\/25 {
+  border-color: rgba(236, 234, 209, 0.7);
+}
+html.a11y-motion *,
+html.a11y-motion *::before,
+html.a11y-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+html.a11y-motion .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
