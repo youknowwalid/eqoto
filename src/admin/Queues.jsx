@@ -111,7 +111,7 @@ export function Transactions() {
           <Btn variant="secondary" size="sm" className="self-center" onClick={exportCsv} disabled={!rows.length}><I.DownloadI size={15} />Export CSV</Btn>
         </div>
         {q.loading && !q.data ? <Loading /> : rows.length === 0 ? <Empty icon={I.ArrowsI} title={tab === 'queue' ? 'No requests waiting' : 'No transactions'} text={tab === 'queue' ? 'Deposits and withdrawals members request will appear here.' : undefined} /> : (
-          <div className="overflow-x-auto"><table className="w-full min-w-[860px]"><thead className="border-b border-line bg-canvas/60"><tr><th className={th}>Date</th><th className={th}>Member</th><th className={th}>Type</th><th className={th}>Detail</th><th className={th}>Amount</th><th className={th}>Status</th>{tab === 'queue' && <th className={th}>Decision</th>}</tr></thead>
+          <div className="overflow-x-auto"><table className="w-full min-w-[860px]"><thead className="border-b border-line bg-canvas/60"><tr><th className={th}>Date</th><th className={th}>Member</th><th className={th}>Type</th><th className={th}>Detail</th><th className={th}>Amount</th>{tab !== 'queue' && <th className={th}>Status</th>}{tab === 'queue' && <th className={th}>Decision</th>}</tr></thead>
             <tbody className="divide-y divide-line">{rows.map((t) => (
               <tr key={t.id}>
                 <td className={cx(td, 'whitespace-nowrap text-soft')}>{dateTime(t.created_at)}</td>
@@ -119,7 +119,7 @@ export function Transactions() {
                 <td className={cx(td, 'capitalize')}>{t.type.replace('_', ' ')}</td>
                 <td className={cx(td, 'max-w-[220px] truncate text-soft')}>{t.symbol ? `${t.symbol} · ${units(t.units)} @ ${price(t.price)}` : t.method || t.note || '—'}{t.type === 'withdrawal' && t.status === 'pending' && t.user?.kyc_status !== 'verified' && <Badge tone="red" className="ml-2">Not verified</Badge>}</td>
                 <td className={cx(td, 'font-semibold tabular-nums', Number(t.amount) >= 0 ? 'text-[#13a24d]' : 'text-fg')}>{signedMoney(t.amount)}</td>
-                <td className={td}><Badge tone={statusTone(t.status)}>{t.status}</Badge></td>
+                {tab !== 'queue' && <td className={td}><Badge tone={statusTone(t.status)}>{t.status}</Badge></td>}
                 {tab === 'queue' && <td className={td}><div className="flex gap-2"><Btn size="sm" loading={busy === t.id} onClick={() => act(t, true)}>Approve</Btn><Btn size="sm" variant="secondary" onClick={() => setDecline(t)}>Decline</Btn></div></td>}
               </tr>
             ))}</tbody></table></div>

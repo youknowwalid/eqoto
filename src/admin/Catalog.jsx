@@ -46,7 +46,7 @@ export function MarketsAdmin() {
       <Card className="mb-5">
         <CardTitle title="Market shock" sub="Move every instrument at once, useful for demos and stress tests." />
         <div className="flex flex-wrap items-center gap-2">{[-10, -5, -2, 2, 5, 10].map((p) => <Btn key={p} size="sm" variant={p < 0 ? 'secondary' : 'soft'} disabled={busy === 'shock'} onClick={() => runShock(p)}>{p > 0 ? '+' : ''}{p}%</Btn>)}
-          <span className="mx-1 text-soft">or</span><Input className="!h-8 !w-[90px]" type="number" step="0.1" placeholder="Custom %" value={shock} onChange={(e) => setShock(e.target.value)} aria-label="Custom percent" /><Btn size="sm" disabled={!Number(shock) || Math.abs(Number(shock)) > 50} onClick={() => runShock(Number(shock))}>Apply</Btn></div>
+          <span className="mx-1 text-soft">or</span><Input className="!h-8 !w-[120px]" type="number" step="0.1" placeholder="Custom %" value={shock} onChange={(e) => setShock(e.target.value)} aria-label="Custom percent" /><Btn size="sm" disabled={!Number(shock) || Math.abs(Number(shock)) > 50} onClick={() => runShock(Number(shock))}>Apply</Btn></div>
       </Card>
       <Card pad={false} className="overflow-hidden">
         <div className="flex flex-wrap items-center gap-3 border-b border-line p-4"><Input className="min-w-[200px] flex-1" placeholder="Search symbol or name" value={qs} onChange={(e) => setQs(e.target.value)} aria-label="Search" /><Tabs tabs={[{ value: 'all', label: 'All' }, { value: 'stock', label: 'Stocks' }, { value: 'etf', label: 'ETFs' }, { value: 'crypto', label: 'Crypto' }]} value={kind} onChange={setKind} /></div>
@@ -92,7 +92,7 @@ function PriceModal({ ins, onClose, onDone }) {
   }
   return (
     <Modal open onClose={onClose} title={`Set price · ${ins.symbol}`} sub={`Current ${price(ins.price)}`} footer={<><Btn variant="secondary" onClick={onClose}>Cancel</Btn><Btn loading={busy} disabled={!(Number(v) > 0)} onClick={save}>Update price</Btn></>}>
-      <Field label="New price (USD)"><Input autoFocus type="number" step="0.0001" min="0" value={v} onChange={(e) => setV(e.target.value)} /></Field>
+      <Field label="New price (USD)"><Input autoFocus type="number" step="0.0001" min="0" placeholder={`e.g. ${Number(ins.price).toFixed(2)}`} value={v} onChange={(e) => setV(e.target.value)} /></Field>
       {Number(v) > 0 && <p className="mt-2 text-[13px] text-soft">That is a change of {pct(((Number(v) - ins.price) / ins.price) * 100)}.</p>}
     </Modal>
   )

@@ -41,7 +41,7 @@ export default function Users() {
           <div className="relative min-w-[220px] flex-1"><I.SearchI size={17} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-soft" /><Input className="!pl-10" placeholder="Search name, email or username" value={qs} onChange={(e) => setQs(e.target.value)} aria-label="Search users" /></div>
           <Select className="!w-[130px]" value={role} onChange={(e) => { setRole(e.target.value); setPage(0) }} aria-label="Role"><option value="">All roles</option><option value="user">Members</option><option value="admin">Admins</option></Select>
           <Select className="!w-[140px]" value={status} onChange={(e) => { setStatus(e.target.value); setPage(0) }} aria-label="Status"><option value="">Any status</option><option value="active">Active</option><option value="suspended">Suspended</option></Select>
-          <Select className="!w-[150px]" value={kyc} onChange={(e) => { setKyc(e.target.value); setPage(0) }} aria-label="Verification"><option value="">Any verification</option>{['unverified', 'pending', 'verified', 'rejected'].map((k) => <option key={k} value={k} className="capitalize">{k}</option>)}</Select>
+          <Select className="!w-[180px]" value={kyc} onChange={(e) => { setKyc(e.target.value); setPage(0) }} aria-label="Verification"><option value="">Any verification</option>{['unverified', 'pending', 'verified', 'rejected'].map((k) => <option key={k} value={k} className="capitalize">{k}</option>)}</Select>
         </div>
         {q.loading && !q.data ? <Loading /> : rows.length === 0 ? <Empty icon={I.UsersI} title="No users match" text="Try clearing a filter." /> : (
           <div className="overflow-x-auto">
