@@ -21,7 +21,7 @@ const MORE = [
   { to: '/app/mirror', label: 'Mirror Pro Investors', icon: I.MirrorI },
   { to: '/app/calendar', label: 'Economic Calendar', icon: I.CalendarI },
   { to: '/app/agents', label: 'Agent Portfolios', icon: I.MirrorI, tag: 'Beta' },
-  { to: '/app/club', label: 'eqoto Club', icon: I.AwardI },
+  { to: '/app/club', label: 'Finvero Club', icon: I.AwardI },
   { to: '/app/invite', label: 'Invite Friends', icon: I.MegaphoneI },
   { to: '/app/wallet?tab=withdraw', label: 'Withdraw Funds', icon: I.CoinsHandI },
   { to: '/app/settings', label: 'Settings', icon: I.SettingsI },
@@ -93,9 +93,9 @@ function Sidebar({ collapsed, onNavigate }) {
   return (
     <div className="flex h-full flex-col bg-navy text-white">
       <div className={cx('flex items-center pt-6', collapsed ? 'justify-center px-2' : 'justify-between px-6')}>
-        <Link to="/app" onClick={onNavigate} className="flex items-center gap-2.5" aria-label="eqoto home">
+        <Link to="/app" onClick={onNavigate} className="flex items-center gap-2.5" aria-label="Finvero home">
           <LogoMark size={30} />
-          {!collapsed && <span className="text-[26px] font-bold tracking-[-0.04em] text-white">eqoto<span className="text-[#6dff8a]">.</span></span>}
+          {!collapsed && <span className="text-[26px] font-bold tracking-[-0.04em] text-white">Finvero<span className="text-[#6dff8a]">.</span></span>}
         </Link>
       </div>
       <div className={cx('mt-7 flex-1 overflow-y-auto pb-4', collapsed ? 'px-2' : 'px-6')}>
@@ -224,7 +224,7 @@ function Pulse() {
   )
   return (
     <Popover label="Market pulse" button={<I.SparkleI size={21} className="text-[#13a24d]" />}>
-      <div className="border-b border-line px-4 py-3"><p className="text-[15px] font-semibold text-fg">Market pulse</p><p className="text-[12.5px] text-soft">Today’s biggest movers on eqoto</p></div>
+      <div className="border-b border-line px-4 py-3"><p className="text-[15px] font-semibold text-fg">Market pulse</p><p className="text-[12.5px] text-soft">Today’s biggest movers on Finvero</p></div>
       <p className="px-4 pt-3 text-[11.5px] font-semibold uppercase tracking-wide text-soft">Top gainers</p>
       {up.map((i) => <Line key={i.symbol} i={i} />)}
       <p className="px-4 pt-3 text-[11.5px] font-semibold uppercase tracking-wide text-soft">Top decliners</p>
@@ -238,14 +238,14 @@ export function AppShell({ children }) {
   const { session, booting, profile, signOut } = useAuth()
   const { path } = useRouter()
   const [collapsed, setCollapsed] = useState(() => {
-    try { return localStorage.getItem('eqoto.nav') === '1' } catch { return false }
+    try { return localStorage.getItem('finvero.nav') === '1' } catch { return false }
   })
   const [drawer, setDrawer] = useState(false)
   const nav = useNavigate()
   const ann = useQuery(() => db.from('platform_settings').select('announcement,announcement_active,trading_enabled').eq('id', 1).maybeSingle(), [])
 
   useEffect(() => {
-    try { localStorage.setItem('eqoto.nav', collapsed ? '1' : '0') } catch { /* ignore */ }
+    try { localStorage.setItem('finvero.nav', collapsed ? '1' : '0') } catch { /* ignore */ }
   }, [collapsed])
   useEffect(() => setDrawer(false), [path])
   useEffect(() => {

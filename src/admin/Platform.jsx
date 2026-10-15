@@ -100,7 +100,7 @@ export function Audit() {
   const actions = [...new Set((q.data || []).map((r) => r.action))].sort()
   return (
     <>
-      <PageHead title="Audit log" sub="Every admin action and sensitive change, newest first." action={<Btn variant="secondary" size="sm" disabled={!rows.length} onClick={() => download('eqoto-audit.csv', toCsv(rows.map((r) => ({ time: r.created_at, actor: r.actor?.email || '', action: r.action, entity: r.entity, id: r.entity_id, meta: JSON.stringify(r.meta) }))))}><I.DownloadI size={15} />Export CSV</Btn>} />
+      <PageHead title="Audit log" sub="Every admin action and sensitive change, newest first." action={<Btn variant="secondary" size="sm" disabled={!rows.length} onClick={() => download('finvero-audit.csv', toCsv(rows.map((r) => ({ time: r.created_at, actor: r.actor?.email || '', action: r.action, entity: r.entity, id: r.entity_id, meta: JSON.stringify(r.meta) }))))}><I.DownloadI size={15} />Export CSV</Btn>} />
       <Card pad={false} className="overflow-hidden">
         <div className="flex flex-wrap gap-3 border-b border-line p-4"><Input className="min-w-[220px] flex-1" placeholder="Search the log" value={qs} onChange={(e) => setQs(e.target.value)} aria-label="Search" /><Select className="!w-[220px]" value={action} onChange={(e) => setAction(e.target.value)} aria-label="Action"><option value="">All actions</option>{actions.map((a) => <option key={a}>{a}</option>)}</Select></div>
         {q.loading && !q.data ? <Loading /> : rows.length === 0 ? <Empty icon={I.ListI} title="Nothing logged yet" text="Admin actions will be recorded here." /> : (

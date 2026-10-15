@@ -17,7 +17,7 @@ export default function Overview() {
   const bars = (arr) => arr.map((x) => ({ label: date(x.d, { day: 'numeric', month: 'short' }), short: new Date(x.d).getDate(), value: Number(x.n) }))
   return (
     <>
-      <PageHead title="Overview" sub="How eqoto is doing right now." />
+      <PageHead title="Overview" sub="How Finvero is doing right now." />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Stat icon={I.UsersI} label="Members" value={num(d.users)} sub={`${d.new_7d} joined in the last 7 days`} />
         <Stat icon={I.ShieldI} label="Verified" value={num(d.verified)} sub={`${d.kyc_pending} document${d.kyc_pending === 1 ? '' : 's'} awaiting review`} />

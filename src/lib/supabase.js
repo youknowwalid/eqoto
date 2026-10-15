@@ -1,7 +1,7 @@
 // A tiny, dependency-free Supabase client (Auth + PostgREST + Storage + Functions).
 import { SUPABASE_URL as URL_, SUPABASE_KEY as KEY } from './config'
 
-const STORE = 'eqoto.session'
+const STORE = 'finvero.session'
 const listeners = new Set()
 let session = read()
 

@@ -28,7 +28,7 @@ function Sidebar({ stats, onNavigate }) {
   const count = (b) => (b === 'queue' ? (stats?.pending_deposits?.n || 0) + (stats?.pending_withdrawals?.n || 0) : stats?.[b] || 0)
   return (
     <div className="flex h-full flex-col bg-navy text-white">
-      <div className="flex h-[70px] items-center gap-2.5 px-5"><LogoMark size={30} /><span className="text-[19px] font-semibold tracking-tight">eqoto</span><Badge tone="violet" className="ml-1">Admin</Badge></div>
+      <div className="flex h-[70px] items-center gap-2.5 px-5"><LogoMark size={30} /><span className="text-[19px] font-semibold tracking-tight">Finvero</span><Badge tone="violet" className="ml-1">Admin</Badge></div>
       <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-2" aria-label="Admin">
         {NAV.map((n) => {
           const on = n.exact ? path === n.to : path === n.to || path.startsWith(`${n.to}/`)

@@ -92,7 +92,7 @@ export default function Home() {
               {watch.length ? <div className="pb-2">{watch.map((i) => <InstrumentRow key={i.symbol} ins={i} onOpen={open} />)}</div> : <Empty title="Your watchlist is empty" text="Tap the star on any instrument to follow it here." />}
             </Card>
             <Card pad={false}>
-              <div className="px-5 pt-5 sm:px-6"><CardTitle title="Biggest movers" sub="Today across eqoto" action={<Link to="/app/pulse" className="text-[13.5px] font-semibold text-azure hover:underline">Market view</Link>} /></div>
+              <div className="px-5 pt-5 sm:px-6"><CardTitle title="Biggest movers" sub="Today across Finvero" action={<Link to="/app/pulse" className="text-[13.5px] font-semibold text-azure hover:underline">Market view</Link>} /></div>
               <div className="pb-2">{movers.map((i) => <InstrumentRow key={i.symbol} ins={i} onOpen={open} />)}</div>
             </Card>
           </div>

@@ -11,7 +11,7 @@ const FAQ = [
   ['How long do deposits take?', 'Deposit requests are reviewed by our team. Once approved, funds appear in your Wallet and you will get a notification.'],
   ['Why can I not withdraw yet?', 'Withdrawals unlock after your identity and address documents are approved in the Verification Centre.'],
   ['What does Mirror Pro Investors do?', 'You allocate an amount to an investor and your allocation follows their performance. You can stop at any time and the current value returns to your balance.'],
-  ['Are the prices real?', 'No. eqoto is a demonstration platform. Prices, investors and balances are simulated and nothing here is investment advice.'],
+  ['Are the prices real?', 'No. Finvero is a demonstration platform. Prices, investors and balances are simulated and nothing here is investment advice.'],
   ['How do I reset the demo account?', 'Open Portfolio, switch to the demo account and choose Reset demo account. Your virtual balance and positions are restored.'],
 ]
 
@@ -120,7 +120,7 @@ export function TicketThread() {
       <Card pad={false}>
         <div className="max-h-[52vh] min-h-[220px] space-y-4 overflow-y-auto p-5">
           {(m.data || []).map((x) => (
-            <div key={x.id} className={cx('flex', x.is_staff ? 'justify-start' : 'justify-end')}><div className={cx('max-w-[85%] rounded-2xl px-4 py-3 text-[14.5px] leading-relaxed', x.is_staff ? 'rounded-bl-sm bg-canvas text-fg' : 'rounded-br-sm bg-navy text-white')}><p className="whitespace-pre-wrap break-words">{x.body}</p><p className={cx('mt-1 text-[11.5px]', x.is_staff ? 'text-soft' : 'text-white/60')}>{x.is_staff ? 'eqoto support' : 'You'} · {dateTime(x.created_at)}</p></div></div>
+            <div key={x.id} className={cx('flex', x.is_staff ? 'justify-start' : 'justify-end')}><div className={cx('max-w-[85%] rounded-2xl px-4 py-3 text-[14.5px] leading-relaxed', x.is_staff ? 'rounded-bl-sm bg-canvas text-fg' : 'rounded-br-sm bg-navy text-white')}><p className="whitespace-pre-wrap break-words">{x.body}</p><p className={cx('mt-1 text-[11.5px]', x.is_staff ? 'text-soft' : 'text-white/60')}>{x.is_staff ? 'Finvero support' : 'You'} · {dateTime(x.created_at)}</p></div></div>
           ))}
           <div ref={end} />
         </div>

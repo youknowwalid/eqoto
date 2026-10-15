@@ -66,7 +66,7 @@ function NotFound() {
       <div>
         <p className="text-[64px] font-bold text-soft">404</p>
         <p className="mt-1 text-[18px] font-semibold text-fg">We couldn’t find that page</p>
-        <Link to="/"><Btn className="mt-5">Back to eqoto</Btn></Link>
+        <Link to="/"><Btn className="mt-5">Back to Finvero</Btn></Link>
       </div>
     </div>
   )
@@ -85,7 +85,7 @@ function Screen() {
   const { path } = useRouter()
   useEffect(() => {
     const area = path.startsWith('/admin') ? 'Admin' : path.startsWith('/app') ? 'Dashboard' : TITLES[path]
-    document.title = area ? `${area} · eqoto` : 'eqoto | Invest with a front-row seat'
+    document.title = area ? `${area} · Finvero` : 'Finvero | Invest with a front-row seat'
   }, [path])
 
   if (path === '/login') return <Login />

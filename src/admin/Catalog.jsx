@@ -42,7 +42,7 @@ export function MarketsAdmin() {
   }
   return (
     <>
-      <PageHead title="Markets" sub="Prices on eqoto are simulated. You control them here." action={<Btn onClick={() => setAdd(true)}><I.PlusI size={16} />Add instrument</Btn>} />
+      <PageHead title="Markets" sub="Prices on Finvero are simulated. You control them here." action={<Btn onClick={() => setAdd(true)}><I.PlusI size={16} />Add instrument</Btn>} />
       <Card className="mb-5">
         <CardTitle title="Market shock" sub="Move every instrument at once, useful for demos and stress tests." />
         <div className="flex flex-wrap items-center gap-2">{[-10, -5, -2, 2, 5, 10].map((p) => <Btn key={p} size="sm" variant={p < 0 ? 'secondary' : 'soft'} disabled={busy === 'shock'} onClick={() => runShock(p)}>{p > 0 ? '+' : ''}{p}%</Btn>)}

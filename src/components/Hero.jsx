@@ -71,7 +71,7 @@ export function Hero() {
 
 export function StatsBar() {
   return (
-    <section aria-label="eqoto at a glance" className="bg-ink">
+    <section aria-label="Finvero at a glance" className="bg-ink">
       <ul className="mx-auto grid max-w-[1376px] grid-cols-1 gap-y-5 px-6 py-7 sm:grid-cols-2 lg:flex lg:items-center lg:justify-between lg:gap-0 lg:px-6 lg:py-6 xl:px-[13px]">
         {stats.map((s, i) => {
           const Icon = statIcons[s.icon]

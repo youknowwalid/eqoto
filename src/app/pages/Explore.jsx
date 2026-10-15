@@ -72,7 +72,7 @@ export function Club() {
   const next = TIERS[idx + 1]
   return (
     <>
-      <PageHead title="eqoto Club" sub="Your tier is based on the total equity of your main account." />
+      <PageHead title="Finvero Club" sub="Your tier is based on the total equity of your main account." />
       {pf.loading ? <Loading /> : (
         <>
           <Card className="mb-5">

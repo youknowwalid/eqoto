@@ -31,7 +31,7 @@ export default function Users() {
   const total = q.data?.total || 0
   const exportAll = async () => {
     const all = await db.from('profiles').select('full_name,email,username,country,role,status,kyc_status,created_at').order('created_at', { ascending: false }).limit(5000)
-    download('eqoto-users.csv', toCsv(all))
+    download('finvero-users.csv', toCsv(all))
   }
   return (
     <>

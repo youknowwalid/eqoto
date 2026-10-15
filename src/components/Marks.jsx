@@ -261,7 +261,7 @@ export function Crest({ kind, size = 100 }) {
           <path d="M58 40v22" stroke="#f2f2ee" strokeOpacity="0.5" />
           <rect x="66" y="45" width="10" height="10" rx="3" fill="#6dff8a" />
           <circle cx="71" cy="50" r="2.2" fill="none" stroke="#10110e" strokeWidth="1.4" />
-          <text x="91" y="54" textAnchor="middle" fill="#6dff8a" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="11" letterSpacing="-0.4">eqoto</text>
+          <text x="91" y="54" textAnchor="middle" fill="#6dff8a" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="11" letterSpacing="-0.4">Finvero</text>
           <text x="90" y="62" textAnchor="middle" fill="#f2f2ee" fontFamily="Inter, Arial, sans-serif" fontWeight="600" fontSize="3.6" letterSpacing="0.8">TEAM PARTNER</text>
         </svg>
       )

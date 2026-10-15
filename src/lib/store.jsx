@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
   const [booting, setBooting] = useState(!!getSession())
   const [kind, setKindState] = useState(() => {
     try {
-      return localStorage.getItem('eqoto.acct') || 'real'
+      return localStorage.getItem('finvero.acct') || 'real'
     } catch {
       return 'real'
     }
@@ -82,7 +82,7 @@ export function AuthProvider({ children }) {
   const setKind = (k) => {
     setKindState(k)
     try {
-      localStorage.setItem('eqoto.acct', k)
+      localStorage.setItem('finvero.acct', k)
     } catch {
       /* ignore */
     }

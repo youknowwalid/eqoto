@@ -1,4 +1,4 @@
-// Builds ONE self-contained file: dist-standalone/eqoto.html
+// Builds ONE self-contained file: dist-standalone/finvero.html
 // Double-click it to open the site in any browser — no server, no install needed.
 //
 //   npm run build:single
@@ -87,7 +87,7 @@ html = html.replace(/<script type="module" src="\/src\/main\.jsx"><\/script>/, (
 
 const outDir = path.join(root, 'dist-standalone')
 fs.mkdirSync(outDir, { recursive: true })
-const out = path.join(outDir, 'eqoto.html')
+const out = path.join(outDir, 'finvero.html')
 fs.writeFileSync(out, html)
 // Also emit a deployable copy (Vercel / any static host) with SPA routing support
 const dist = path.join(root, 'dist')

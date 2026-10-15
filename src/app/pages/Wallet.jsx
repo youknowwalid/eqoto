@@ -52,7 +52,7 @@ export default function Wallet() {
   }
   const rows = (tx.data || []).filter((t) => filter === 'all' || t.type === filter || (filter === 'trades' && ['buy', 'sell'].includes(t.type)))
   const exportCsv = () =>
-    download('eqoto-transactions.csv', toCsv(rows.map((t) => ({ date: t.created_at, type: t.type, symbol: t.symbol || '', amount: t.amount, fee: t.fee, status: t.status, method: t.method || '', note: t.note || '' }))))
+    download('finvero-transactions.csv', toCsv(rows.map((t) => ({ date: t.created_at, type: t.type, symbol: t.symbol || '', amount: t.amount, fee: t.fee, status: t.status, method: t.method || '', note: t.note || '' }))))
 
   return (
     <>

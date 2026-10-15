@@ -19,7 +19,7 @@ function Frame({ title, sub, children, footer }) {
           <div className="mt-8 text-fg [&_label>span:first-child]:text-cream/90">{children}</div>
           <div className="mt-6 text-[14.5px] text-mute">{footer}</div>
         </div>
-        <p className="text-[12.5px] text-mute/80">eqoto is a demonstration brand. Balances, prices and returns are simulated.</p>
+        <p className="text-[12.5px] text-mute/80">Finvero is a demonstration brand. Balances, prices and returns are simulated.</p>
       </div>
       <aside className="relative hidden overflow-hidden lg:block" style={{ background: 'radial-gradient(120% 90% at 80% 10%,#1d4a38 0%,#112018 45%,#0c0f0b 100%)' }}>
         <div className="absolute inset-0 opacity-[.18]" style={{ backgroundImage: 'radial-gradient(#6dff8a 1px,transparent 1px)', backgroundSize: '26px 26px' }} />
@@ -65,7 +65,7 @@ export function Login() {
     }
   }
   return (
-    <Frame title="Welcome back" sub="Log in to your eqoto account." footer={<>New to eqoto? <Link to="/signup" className="font-semibold text-neon hover:underline">Create an account</Link></>}>
+    <Frame title="Welcome back" sub="Log in to your Finvero account." footer={<>New to Finvero? <Link to="/signup" className="font-semibold text-neon hover:underline">Create an account</Link></>}>
       <form onSubmit={submit} className="space-y-4" noValidate>
         <Field label="Email"><Input className={dark} type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" /></Field>
         <Field label="Password"><Input className={dark} type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Your password" /></Field>
@@ -111,7 +111,7 @@ export function Signup() {
           <Field label="Email"><Input className={dark} type="email" autoComplete="email" value={f.email} onChange={set('email')} placeholder="you@example.com" /></Field>
           <Field label="Password" hint={<span className="text-mute">At least 8 characters.</span>}><Input className={dark} type="password" autoComplete="new-password" value={f.password} onChange={set('password')} placeholder="Choose a password" /></Field>
           <Field label="Country"><Select className={dark} value={f.country} onChange={set('country')}>{COUNTRIES.map((c) => <option key={c} className="text-black">{c}</option>)}</Select></Field>
-          <label className="flex items-start gap-3 text-[13.5px] text-mute"><input type="checkbox" checked={f.agree} onChange={set('agree')} className="mt-1 h-4 w-4 accent-[#6dff8a]" />I understand eqoto is a demonstration platform and that investing involves risk.</label>
+          <label className="flex items-start gap-3 text-[13.5px] text-mute"><input type="checkbox" checked={f.agree} onChange={set('agree')} className="mt-1 h-4 w-4 accent-[#6dff8a]" />I understand Finvero is a demonstration platform and that investing involves risk.</label>
           {sp.get('ref') && <p className="text-[13px] text-neon">Referral code applied: {sp.get('ref')}</p>}
           {error && <p role="alert" className="rounded-lg bg-[#c0392b]/20 px-3 py-2 text-[13.5px] text-[#ffb4ab]">{error}</p>}
           <Btn type="submit" size="lg" loading={busy} disabled={!f.agree || !f.email || !f.password} className="w-full !bg-neon !text-ink hover:!bg-[#8affa1]">Create account</Btn>

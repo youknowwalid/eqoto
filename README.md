@@ -1,13 +1,13 @@
-# eqoto — investing platform demo
+# Finvero — investing platform demo
 
-A complete, original investing-platform concept for the fictional brand **eqoto**: a marketing site, a member dashboard and an admin panel, backed by Supabase.
+A complete, original investing-platform concept for the fictional brand **Finvero**: a marketing site, a member dashboard and an admin panel, backed by Supabase.
 React 19 + Vite 6 + Tailwind CSS v4, no UI or backend SDK dependencies (a ~200-line Supabase client lives in `src/lib/supabase.js`).
 
 | Area | Route | What is in it |
 |---|---|---|
 | Marketing site | `/` | Landing page with generated art, portraits and QR code |
 | Sign up / log in | `/signup`, `/login` | Email + password, referral codes (`?ref=`) |
-| Member dashboard | `/app/*` | Home, Watchlist, Portfolio, Discover, Wallet (deposit / withdraw / history), Mirror Pro Investors, Agent Portfolios, Economic Calendar, eqoto Club, Invite Friends, Verification Centre (document upload), Settings (6 sections), Help (tickets), Academy, Pulse, App Store; real and demo accounts; trade drawer |
+| Member dashboard | `/app/*` | Home, Watchlist, Portfolio, Discover, Wallet (deposit / withdraw / history), Mirror Pro Investors, Agent Portfolios, Economic Calendar, Finvero Club, Invite Friends, Verification Centre (document upload), Settings (6 sections), Help (tickets), Academy, Pulse, App Store; real and demo accounts; trade drawer |
 | Admin panel | `/admin/*` | Overview, Users (roles, suspend, adjust balance, notify), Verification queue (private document preview), Transactions (approve / decline), Markets (set prices, market shock), Investors, Support inbox, Content (lessons, calendar), Broadcasts, Platform settings, Audit log |
 
 ## Backend (Supabase)
@@ -21,7 +21,7 @@ To make someone an admin, run in the Supabase SQL editor: `update public.profile
 npm install
 npm run dev
 npm run build          # production build in /dist (Vercel runs this)
-npm run build:single   # offline single-file build (dist-standalone/eqoto.html)
+npm run build:single   # offline single-file build (dist-standalone/finvero.html)
 ```
 
 ## Important

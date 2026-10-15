@@ -1,18 +1,18 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  eqoto — all page copy lives here, so you can edit text without touching layout.
+//  Finvero — all page copy lives here, so you can edit text without touching layout.
 //  Everything below is ILLUSTRATIVE SAMPLE CONTENT for a brand concept:
 //  names, numbers, regulators, banks and partner clubs are invented.
 //  Replace them with real, verified facts before this page goes live anywhere.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const brand = {
-  name: 'eqoto',
+  name: 'Finvero',
   // The QR code on the page is generated from this address (any short URL works).
-  qrTarget: 'https://eqoto.example/app',
+  qrTarget: 'https://finvero.example/app',
 }
 
 export const announcement =
-  'eqoto is a multi-asset investing platform concept. Illustrative content only — investments can rise and fall, and your capital is at risk.'
+  'Finvero is a multi-asset investing platform concept. Illustrative content only — investments can rise and fall, and your capital is at risk.'
 
 export const nav = [
   {
@@ -20,7 +20,7 @@ export const nav = [
     items: ['Stocks', 'Crypto', 'ETFs', 'Indices', 'Commodities', 'Currencies'],
   },
   {
-    label: 'Why eqoto',
+    label: 'Why Finvero',
     items: ['Our story', 'Security', 'Community', 'Pricing'],
   },
   {
@@ -29,7 +29,7 @@ export const nav = [
   },
   {
     label: 'Company',
-    items: ['About eqoto', 'Careers', 'Press room', 'Investor relations'],
+    items: ['About Finvero', 'Careers', 'Press room', 'Investor relations'],
   },
 ]
 
@@ -131,7 +131,7 @@ export const markets = {
 export const investors = {
   title: 'The investors worth watching.',
   text: 'Pick someone whose results you respect, choose how much to put behind them, and Mirror does the rest — their moves become your moves. Smart, isn’t it?',
-  note: 'Featured investors are verified through the eqoto Verified Investor Program. Past performance does not guarantee future results.',
+  note: 'Featured investors are verified through the Finvero Verified Investor Program. Past performance does not guarantee future results.',
   cta: 'Find investors to mirror',
   list: [
     {
@@ -345,13 +345,13 @@ export const footer = {
       title: 'SUPPORT',
       links: ['Help Center', 'How to Deposit', 'Open an Account', 'Risk Disclosures', 'Responsible Trading'],
     },
-    { title: 'ABOUT US', links: ['About eqoto', 'Investor Relations', 'Careers', 'Awards'] },
+    { title: 'ABOUT US', links: ['About Finvero', 'Investor Relations', 'Careers', 'Awards'] },
     {
       title: 'LEGAL',
       links: ['Regulation', 'Privacy Policy', 'Terms & Conditions', 'Cookie Policy'],
     },
-    { title: 'PARTNERS', links: ['Invite a Friend', 'Affiliate Program', 'eqoto Club'] },
+    { title: 'PARTNERS', links: ['Invite a Friend', 'Affiliate Program', 'Finvero Club'] },
   ],
   legal:
-    'eqoto is a demonstration brand created for design study. All names, figures, partner marks and regulatory references on this page are illustrative sample content and do not describe a real, regulated service.',
+    'Finvero is a demonstration brand created for design study. All names, figures, partner marks and regulatory references on this page are illustrative sample content and do not describe a real, regulated service.',
 }

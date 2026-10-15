@@ -100,7 +100,7 @@ export function Transactions() {
       setBusy('')
     }
   }
-  const exportCsv = () => download('eqoto-transactions.csv', toCsv(rows.map((t) => ({ date: t.created_at, member: t.user?.email, type: t.type, symbol: t.symbol || '', amount: t.amount, fee: t.fee, status: t.status, method: t.method || '', note: t.note || '' }))))
+  const exportCsv = () => download('finvero-transactions.csv', toCsv(rows.map((t) => ({ date: t.created_at, member: t.user?.email, type: t.type, symbol: t.symbol || '', amount: t.amount, fee: t.fee, status: t.status, method: t.method || '', note: t.note || '' }))))
   return (
     <>
       <PageHead title="Transactions" sub="Approve money requests and review everything that moved." action={<Tabs tabs={[{ value: 'queue', label: 'Approval queue' }, { value: 'all', label: 'All activity' }]} value={tab} onChange={setTab} />} />

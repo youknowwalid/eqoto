@@ -15,7 +15,7 @@ export function Academy() {
   const rows = (q.data || []).filter((a) => (cat === 'All' || a.category === cat) && (a.title + a.summary).toLowerCase().includes(qs.toLowerCase()))
   return (
     <>
-      <PageHead title="Academy" sub="Short lessons on markets, risk and how eqoto works." action={<Input className="!w-[240px]" placeholder="Search lessons" value={qs} onChange={(e) => setQs(e.target.value)} aria-label="Search lessons" />} />
+      <PageHead title="Academy" sub="Short lessons on markets, risk and how Finvero works." action={<Input className="!w-[240px]" placeholder="Search lessons" value={qs} onChange={(e) => setQs(e.target.value)} aria-label="Search lessons" />} />
       <Tabs className="mb-5" tabs={cats} value={cat} onChange={setCat} />
       {q.loading && !q.data ? <Loading /> : rows.length === 0 ? <Card><Empty icon={I.BookI} title="No lessons found" /></Card> : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{rows.map((a, i) => (
@@ -65,10 +65,10 @@ export function Invite() {
       ui.info(link)
     }
   }
-  const share = () => (navigator.share ? navigator.share({ title: 'Join me on eqoto', url: link }).catch(() => {}) : copy())
+  const share = () => (navigator.share ? navigator.share({ title: 'Join me on Finvero', url: link }).catch(() => {}) : copy())
   return (
     <>
-      <PageHead title="Invite Friends" sub="Share eqoto with people you know. They get a demo account with $100,000 to practise with." />
+      <PageHead title="Invite Friends" sub="Share Finvero with people you know. They get a demo account with $100,000 to practise with." />
       <div className="grid gap-5 lg:grid-cols-[1.3fr_1fr]">
         <Card>
           <CardTitle title="Your invite link" />
@@ -92,12 +92,12 @@ const APPS = [
   { icon: I.CalendarI, title: 'Economic Calendar', text: 'Data releases and central bank events that move markets.', to: '/app/calendar', tag: 'Included' },
   { icon: I.RefreshI, title: 'Recurring Orders', text: 'Save a plan and invest the same amount in one click.', to: '/app/settings/recurring', tag: 'Included' },
   { icon: I.BookI, title: 'Academy', text: 'Short lessons for every level.', to: '/app/academy', tag: 'Included' },
-  { icon: I.AwardI, title: 'eqoto Club', text: 'Tiers with perks as your account grows.', to: '/app/club', tag: 'Included' },
+  { icon: I.AwardI, title: 'Finvero Club', text: 'Tiers with perks as your account grows.', to: '/app/club', tag: 'Included' },
 ]
 export function Store() {
   return (
     <>
-      <PageHead title="App Store" sub="Everything you can switch on in eqoto, all in one place." />
+      <PageHead title="App Store" sub="Everything you can switch on in Finvero, all in one place." />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{APPS.map((a) => (
         <Link key={a.title} to={a.to} className="flex flex-col rounded-xl border border-line bg-card p-5 transition hover:-translate-y-0.5 hover:shadow-md"><span className="grid h-12 w-12 place-items-center rounded-xl bg-navy text-white"><a.icon size={24} /></span><h3 className="mt-4 text-[16px] font-semibold text-fg">{a.title}</h3><p className="mt-1 flex-1 text-[13.5px] text-soft">{a.text}</p><span className="mt-4"><Badge tone={a.tag === 'Beta' ? 'violet' : 'green'}>{a.tag}</Badge></span></Link>
       ))}</div>
