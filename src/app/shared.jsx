@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { isStale, sourceOf } from '../lib/marketData'
 import { Avatar as Face } from '../components/Portrait'
 import { investors as site } from '../content'
 import { db, rpc } from '../lib/supabase'
@@ -13,6 +14,17 @@ export function InstrumentMark({ symbol, size = 38 }) {
   return (
     <span className="grid shrink-0 place-items-center rounded-full font-bold text-white" style={{ width: size, height: size, fontSize: size * 0.3, background: `linear-gradient(135deg,hsl(${hue} 55% 46%),hsl(${(hue + 40) % 360} 60% 36%))` }} aria-hidden="true">
       {symbol.slice(0, 2)}
+    </span>
+  )
+}
+
+/** Always tells the user where a price comes from, so simulated prices are never mistaken for live quotes. */
+export function SourceBadge({ ins, className = '' }) {
+  const src = sourceOf(ins)
+  const stale = isStale(ins)
+  return (
+    <span title={src.note} className={cx('inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold', src.live && !stale ? 'bg-[#dff6e8] text-[#0c7a39]' : 'bg-[#fff0d6] text-[#955f00]', className)}>
+      {src.live ? (stale ? 'Licensed · stale' : 'Licensed feed') : 'Simulated price'}
     </span>
   )
 }
@@ -92,7 +104,7 @@ export function MirrorModal({ investor, onClose, onDone }) {
         </div>
       </div>
       <p className="mt-4 text-[13.5px] leading-relaxed text-soft">{investor.bio}</p>
-      <Field label={`Amount to allocate (${kind === 'demo' ? 'demo account' : 'real account'})`} hint={`Minimum ${money(min)} · Available ${money(account?.balance)}`} className="mt-4">
+      <Field label={`Amount to allocate (${kind === 'demo' ? 'demo account' : 'main account'})`} hint={`Minimum ${money(min)} · Available ${money(account?.balance)}`} className="mt-4">
         <Input type="number" min={min} step="50" value={amount} onChange={(e) => setAmount(e.target.value)} />
       </Field>
       <div className="mt-2 flex gap-2">

@@ -1,5 +1,7 @@
+import { BRAND } from '../brand'
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { auth, db, getSession, onAuthChange, rpc } from './supabase'
+import { auth, db, getSession, onAuthChange } from './supabase'
+import * as md from './marketData'
 
 /* ───────────── data hook ───────────── */
 export function useQuery(fn, deps = []) {
@@ -39,7 +41,7 @@ export function AuthProvider({ children }) {
   const [booting, setBooting] = useState(!!getSession())
   const [kind, setKindState] = useState(() => {
     try {
-      return localStorage.getItem('finvero.acct') || 'real'
+      return localStorage.getItem(BRAND.storage.account) || 'real'
     } catch {
       return 'real'
     }
@@ -82,7 +84,7 @@ export function AuthProvider({ children }) {
   const setKind = (k) => {
     setKindState(k)
     try {
-      localStorage.setItem('finvero.acct', k)
+      localStorage.setItem(BRAND.storage.account, k)
     } catch {
       /* ignore */
     }
@@ -140,29 +142,19 @@ export function MarketProvider({ children }) {
   const [loaded, setLoaded] = useState(false)
 
   const refresh = useCallback(async () => {
-    const rows = await db.from('instruments').select('*').order('symbol')
-    setList(rows || [])
+    setList((await md.fetchInstruments()) || [])
     setLoaded(true)
   }, [])
-
-  const loadSpark = useCallback(async () => {
-    const since = new Date(Date.now() - 7 * 86400000).toISOString()
-    const rows = await db.from('price_history').select('symbol,price').gte('ts', since).order('ts').limit(6000)
-    const m = {}
-    ;(rows || []).forEach((r) => (m[r.symbol] ||= []).push(Number(r.price)))
-    setSpark(m)
-  }, [])
+  const loadSpark = useCallback(async () => setSpark(await md.fetchSparks()), [])
 
   useEffect(() => {
     refresh().catch(() => setLoaded(true))
     loadSpark().catch(() => {})
-    const sp = setInterval(() => document.visibilityState === 'visible' && loadSpark().catch(() => {}), 90000)
-    const poll = setInterval(() => document.visibilityState === 'visible' && refresh().catch(() => {}), 15000)
-    const tick = () => {
-      if (document.visibilityState === 'visible' && getSession()) rpc('tick_prices').catch(() => {})
-    }
-    const t0 = setTimeout(tick, 2500)
-    const ticker = setInterval(tick, 50000)
+    const visible = (f) => () => document.visibilityState === 'visible' && f().catch(() => {})
+    const sp = setInterval(visible(loadSpark), 90000)
+    const poll = setInterval(visible(refresh), 15000)
+    const t0 = setTimeout(md.tickSimulation, 2500)
+    const ticker = setInterval(() => document.visibilityState === 'visible' && md.tickSimulation(), 50000)
     return () => {
       clearInterval(poll)
       clearInterval(sp)
@@ -185,19 +177,8 @@ export function MarketProvider({ children }) {
   return <MarketCtx.Provider value={value}>{children}</MarketCtx.Provider>
 }
 
-const histCache = new Map()
 /** Price history for a symbol. range: 1D | 1W | 1M | 3M */
-export async function loadHistory(symbol, range = '1M') {
-  const days = { '1D': 1, '1W': 7, '1M': 30, '3M': 90 }[range] || 30
-  const key = `${symbol}:${range}`
-  const hit = histCache.get(key)
-  if (hit && Date.now() - hit.at < 20000) return hit.rows
-  const since = new Date(Date.now() - days * 86400000).toISOString()
-  const rows = await db.from('price_history').select('ts,price').eq('symbol', symbol).gte('ts', since).order('ts').limit(2000)
-  const out = (rows || []).map((r) => ({ t: new Date(r.ts).getTime(), v: Number(r.price) }))
-  histCache.set(key, { at: Date.now(), rows: out })
-  return out
-}
+export const loadHistory = md.fetchSeries
 
 /* ───────────── toasts + confirm ───────────── */
 const UiCtx = createContext(null)

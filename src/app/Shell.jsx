@@ -1,3 +1,4 @@
+import { BRAND } from '../brand'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { LogoMark } from '../components/Logo'
 import { db } from '../lib/supabase'
@@ -14,6 +15,7 @@ const MAIN = [
   { to: '/app/watchlist', label: 'Watchlist', icon: I.StarI },
   { to: '/app/portfolio', label: 'Portfolio', icon: I.PieI },
   { to: '/app/discover', label: 'Discover', icon: I.CompassI },
+  { to: '/app/community', label: 'Community', icon: I.MessageI },
   { to: '/app/wallet', label: 'Wallet', icon: I.WalletI },
 ]
 const MORE = [
@@ -21,7 +23,7 @@ const MORE = [
   { to: '/app/mirror', label: 'Mirror Pro Investors', icon: I.MirrorI },
   { to: '/app/calendar', label: 'Economic Calendar', icon: I.CalendarI },
   { to: '/app/agents', label: 'Agent Portfolios', icon: I.MirrorI, tag: 'Beta' },
-  { to: '/app/club', label: 'Finvero Club', icon: I.AwardI },
+  { to: '/app/club', label: 'EQOTO Club', icon: I.AwardI },
   { to: '/app/invite', label: 'Invite Friends', icon: I.MegaphoneI },
   { to: '/app/wallet?tab=withdraw', label: 'Withdraw Funds', icon: I.CoinsHandI },
   { to: '/app/settings', label: 'Settings', icon: I.SettingsI },
@@ -53,13 +55,13 @@ function AccountSwitcher() {
         <span className={cx('h-2.5 w-2.5 rounded-full', kind === 'demo' ? 'bg-[#a98bff]' : 'bg-[#3bd16f]')} />
         <span className="min-w-0 flex-1 leading-tight">
           <span className="block text-[14px] font-semibold text-white">{kind === 'demo' ? 'Demo Account' : 'Main Account'}</span>
-          <span className="block text-[11px] text-white/60">{kind === 'demo' ? 'Virtual' : 'Real'} · {money(cur?.balance)}</span>
+          <span className="block text-[11px] text-white/60">{kind === 'demo' ? 'Practice' : 'Simulated funds'} · {money(cur?.balance)}</span>
         </span>
         <I.ChevDownI size={18} className="text-white/70" />
       </button>
       {open && (
         <ul role="listbox" className="absolute inset-x-0 top-full z-30 mt-1.5 overflow-hidden rounded-lg bg-navy-2 shadow-xl ring-1 ring-white/10">
-          {[['real', 'Main Account', 'Real', real], ['demo', 'Demo Account', 'Virtual', demo]].map(([k, n, s, a]) => (
+          {[['real', 'Main Account', 'Simulated funds', real], ['demo', 'Demo Account', 'Practice', demo]].map(([k, n, s, a]) => (
             <li key={k}>
               <button role="option" aria-selected={kind === k} onClick={() => { setKind(k); setOpen(false) }} className={cx('flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5', kind === k && 'bg-white/5')}>
                 <span className={cx('h-2.5 w-2.5 rounded-full', k === 'demo' ? 'bg-[#a98bff]' : 'bg-[#3bd16f]')} />
@@ -93,9 +95,9 @@ function Sidebar({ collapsed, onNavigate }) {
   return (
     <div className="flex h-full flex-col bg-navy text-white">
       <div className={cx('flex items-center pt-6', collapsed ? 'justify-center px-2' : 'justify-between px-6')}>
-        <Link to="/app" onClick={onNavigate} className="flex items-center gap-2.5" aria-label="Finvero home">
+        <Link to="/app" onClick={onNavigate} className="flex items-center gap-2.5" aria-label="EQOTO home">
           <LogoMark size={30} />
-          {!collapsed && <span className="text-[26px] font-bold tracking-[-0.04em] text-white">Finvero<span className="text-[#6dff8a]">.</span></span>}
+          {!collapsed && <span className="text-[26px] font-bold tracking-[-0.04em] text-white">EQOTO<span className="text-[#6dff8a]">.</span></span>}
         </Link>
       </div>
       <div className={cx('mt-7 flex-1 overflow-y-auto pb-4', collapsed ? 'px-2' : 'px-6')}>
@@ -224,7 +226,7 @@ function Pulse() {
   )
   return (
     <Popover label="Market pulse" button={<I.SparkleI size={21} className="text-[#13a24d]" />}>
-      <div className="border-b border-line px-4 py-3"><p className="text-[15px] font-semibold text-fg">Market pulse</p><p className="text-[12.5px] text-soft">Today’s biggest movers on Finvero</p></div>
+      <div className="border-b border-line px-4 py-3"><p className="text-[15px] font-semibold text-fg">Market pulse</p><p className="text-[12.5px] text-soft">Today’s biggest movers on EQOTO</p></div>
       <p className="px-4 pt-3 text-[11.5px] font-semibold uppercase tracking-wide text-soft">Top gainers</p>
       {up.map((i) => <Line key={i.symbol} i={i} />)}
       <p className="px-4 pt-3 text-[11.5px] font-semibold uppercase tracking-wide text-soft">Top decliners</p>
@@ -238,14 +240,14 @@ export function AppShell({ children }) {
   const { session, booting, profile, signOut } = useAuth()
   const { path } = useRouter()
   const [collapsed, setCollapsed] = useState(() => {
-    try { return localStorage.getItem('finvero.nav') === '1' } catch { return false }
+    try { return localStorage.getItem(BRAND.storage.nav) === '1' } catch { return false }
   })
   const [drawer, setDrawer] = useState(false)
   const nav = useNavigate()
   const ann = useQuery(() => db.from('platform_settings').select('announcement,announcement_active,trading_enabled').eq('id', 1).maybeSingle(), [])
 
   useEffect(() => {
-    try { localStorage.setItem('finvero.nav', collapsed ? '1' : '0') } catch { /* ignore */ }
+    try { localStorage.setItem(BRAND.storage.nav, collapsed ? '1' : '0') } catch { /* ignore */ }
   }, [collapsed])
   useEffect(() => setDrawer(false), [path])
   useEffect(() => {

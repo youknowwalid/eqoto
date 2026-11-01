@@ -52,11 +52,11 @@ export default function Wallet() {
   }
   const rows = (tx.data || []).filter((t) => filter === 'all' || t.type === filter || (filter === 'trades' && ['buy', 'sell'].includes(t.type)))
   const exportCsv = () =>
-    download('finvero-transactions.csv', toCsv(rows.map((t) => ({ date: t.created_at, type: t.type, symbol: t.symbol || '', amount: t.amount, fee: t.fee, status: t.status, method: t.method || '', note: t.note || '' }))))
+    download('eqoto-transactions.csv', toCsv(rows.map((t) => ({ date: t.created_at, type: t.type, symbol: t.symbol || '', amount: t.amount, fee: t.fee, status: t.status, method: t.method || '', note: t.note || '' }))))
 
   return (
     <>
-      <PageHead title="Wallet" sub="Move money in and out of your main account." />
+      <PageHead title="Wallet" sub="Simulated funds only. Requests are reviewed by EQOTO staff and no real money moves." />
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="sm:col-span-2 !bg-navy !text-white !border-navy"><p className="text-[13px] text-white/65">Available balance · Main account</p><p className="mt-1 text-[38px] font-semibold tracking-tight tabular-nums">{money(real?.balance)}</p><p className="mt-1 text-[13px] text-white/60">{pending.length} pending request{pending.length === 1 ? '' : 's'}</p></Card>
         <Card><p className="text-[13px] text-soft">Verification</p><p className="mt-1 flex items-center gap-2 text-[19px] font-semibold capitalize text-fg">{profile.kyc_status}<Badge tone={statusTone(profile.kyc_status)}>{verified ? 'Withdrawals on' : 'Withdrawals off'}</Badge></p>{!verified && <Link to="/app/verification" className="mt-2 inline-block text-[13.5px] font-semibold text-azure hover:underline">Complete verification</Link>}</Card>

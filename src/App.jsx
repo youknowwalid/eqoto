@@ -1,3 +1,4 @@
+import { BRAND } from './brand'
 import { useEffect } from 'react'
 import { Router, useRouter, matchPath, Link, ParamsCtx } from './lib/router'
 import { AuthProvider, MarketProvider, UiProvider } from './lib/store'
@@ -9,6 +10,7 @@ import { AdminShell } from './admin/AdminShell'
 import Home from './app/pages/Home'
 import { Watchlist, Portfolio, Discover } from './app/pages/Markets'
 import Wallet from './app/pages/Wallet'
+import Community from './app/pages/Community'
 import { InvestorsPage, Calendar, Club, Pulse } from './app/pages/Explore'
 import Settings from './app/pages/Settings'
 import Verification from './app/pages/Verification'
@@ -19,6 +21,7 @@ import Users from './admin/Users'
 import { VerificationQueue, Transactions } from './admin/Queues'
 import { MarketsAdmin, InvestorsAdmin } from './admin/Catalog'
 import SupportAdmin from './admin/SupportAdmin'
+import Moderation from './admin/Moderation'
 import Content from './admin/Content'
 import { Broadcast, PlatformSettings, Audit } from './admin/Platform'
 import { Btn } from './app/ui'
@@ -28,6 +31,7 @@ const MEMBER = [
   ['/app/watchlist', () => <Watchlist />],
   ['/app/portfolio', () => <Portfolio />],
   ['/app/discover', () => <Discover />],
+  ['/app/community', () => <Community />],
   ['/app/wallet', () => <Wallet />],
   ['/app/store', () => <Store />],
   ['/app/mirror', () => <InvestorsPage kind="investor" />],
@@ -52,6 +56,7 @@ const ADMIN = [
   ['/admin/markets', () => <MarketsAdmin />],
   ['/admin/investors', () => <InvestorsAdmin />],
   ['/admin/support', () => <SupportAdmin />],
+  ['/admin/community', () => <Moderation />],
   ['/admin/content', () => <Content />],
   ['/admin/notifications', () => <Broadcast />],
   ['/admin/settings', () => <PlatformSettings />],
@@ -66,7 +71,7 @@ function NotFound() {
       <div>
         <p className="text-[64px] font-bold text-soft">404</p>
         <p className="mt-1 text-[18px] font-semibold text-fg">We couldn’t find that page</p>
-        <Link to="/"><Btn className="mt-5">Back to Finvero</Btn></Link>
+        <Link to="/"><Btn className="mt-5">Back to EQOTO</Btn></Link>
       </div>
     </div>
   )
@@ -85,7 +90,7 @@ function Screen() {
   const { path } = useRouter()
   useEffect(() => {
     const area = path.startsWith('/admin') ? 'Admin' : path.startsWith('/app') ? 'Dashboard' : TITLES[path]
-    document.title = area ? `${area} · Finvero` : 'Finvero | Invest with a front-row seat'
+    document.title = area ? `${area} · ${BRAND.name}` : `${BRAND.name} | ${BRAND.tagline}`
   }, [path])
 
   if (path === '/login') return <Login />

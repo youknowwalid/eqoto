@@ -53,7 +53,7 @@ export function PlatformSettings() {
   const save = async () => {
     setBusy(true)
     try {
-      await db.from('platform_settings').update({ announcement: f.announcement, announcement_active: f.announcement_active, min_deposit: Number(f.min_deposit), min_withdrawal: Number(f.min_withdrawal), withdrawal_fee_pct: Number(f.withdrawal_fee_pct), trade_fee: Number(f.trade_fee), min_copy: Number(f.min_copy), trading_enabled: f.trading_enabled, signups_enabled: f.signups_enabled, updated_at: new Date().toISOString() }).eq('id', 1)
+      await db.from('platform_settings').update({ announcement: f.announcement, announcement_active: f.announcement_active, min_deposit: Number(f.min_deposit), min_withdrawal: Number(f.min_withdrawal), withdrawal_fee_pct: Number(f.withdrawal_fee_pct), trade_fee: Number(f.trade_fee), min_copy: Number(f.min_copy), max_order: Number(f.max_order), demo_start_balance: Number(f.demo_start_balance), trading_enabled: f.trading_enabled, signups_enabled: f.signups_enabled, updated_at: new Date().toISOString() }).eq('id', 1)
       ui.ok('Settings saved')
       q.reload()
     } catch (e) {
@@ -80,6 +80,8 @@ export function PlatformSettings() {
             <Field label="Minimum deposit"><Input type="number" min="1" value={f.min_deposit} onChange={num('min_deposit')} /></Field>
             <Field label="Minimum withdrawal"><Input type="number" min="1" value={f.min_withdrawal} onChange={num('min_withdrawal')} /></Field>
             <Field label="Minimum mirror amount"><Input type="number" min="1" value={f.min_copy} onChange={num('min_copy')} /></Field>
+            <Field label="Maximum order / mirror (USD)"><Input type="number" min="1" value={f.max_order} onChange={num('max_order')} /></Field>
+            <Field label="Demo account starting balance"><Input type="number" min="0" value={f.demo_start_balance} onChange={num('demo_start_balance')} /></Field>
           </div>
         </Card>
         <Card className="lg:col-span-2">
@@ -100,7 +102,7 @@ export function Audit() {
   const actions = [...new Set((q.data || []).map((r) => r.action))].sort()
   return (
     <>
-      <PageHead title="Audit log" sub="Every admin action and sensitive change, newest first." action={<Btn variant="secondary" size="sm" disabled={!rows.length} onClick={() => download('finvero-audit.csv', toCsv(rows.map((r) => ({ time: r.created_at, actor: r.actor?.email || '', action: r.action, entity: r.entity, id: r.entity_id, meta: JSON.stringify(r.meta) }))))}><I.DownloadI size={15} />Export CSV</Btn>} />
+      <PageHead title="Audit log" sub="Every admin action and sensitive change, newest first." action={<Btn variant="secondary" size="sm" disabled={!rows.length} onClick={() => download('eqoto-audit.csv', toCsv(rows.map((r) => ({ time: r.created_at, actor: r.actor?.email || '', action: r.action, entity: r.entity, id: r.entity_id, meta: JSON.stringify(r.meta) }))))}><I.DownloadI size={15} />Export CSV</Btn>} />
       <Card pad={false} className="overflow-hidden">
         <div className="flex flex-wrap gap-3 border-b border-line p-4"><Input className="min-w-[220px] flex-1" placeholder="Search the log" value={qs} onChange={(e) => setQs(e.target.value)} aria-label="Search" /><Select className="!w-[220px]" value={action} onChange={(e) => setAction(e.target.value)} aria-label="Action"><option value="">All actions</option>{actions.map((a) => <option key={a}>{a}</option>)}</Select></div>
         {q.loading && !q.data ? <Loading /> : rows.length === 0 ? <Empty icon={I.ListI} title="Nothing logged yet" text="Admin actions will be recorded here." /> : (

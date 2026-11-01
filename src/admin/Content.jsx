@@ -85,7 +85,7 @@ function Events() {
   const save = async () => {
     if (f.title.trim().length < 3 || !f.starts_at) return ui.err('A title and date are required')
     setBusy(true)
-    const body = { title: f.title.trim(), region: f.region.trim() || 'US', impact: f.impact, starts_at: new Date(f.starts_at).toISOString(), forecast: f.forecast || null, previous: f.previous || null }
+    const body = { title: f.title.trim(), region: f.region.trim() || 'US', impact: f.impact, category: f.category || 'economic', starts_at: new Date(f.starts_at).toISOString(), forecast: f.forecast || null, previous: f.previous || null }
     try {
       if (f.id) await db.from('events').update(body).eq('id', f.id)
       else await db.from('events').insert(body)
@@ -109,7 +109,7 @@ function Events() {
   }
   return (
     <>
-      <div className="mb-4 flex justify-end"><Btn onClick={() => setF({ title: '', region: 'US', impact: 'medium', starts_at: toLocal(Date.now() + 86400000), forecast: '', previous: '' })}><I.PlusI size={16} />New event</Btn></div>
+      <div className="mb-4 flex justify-end"><Btn onClick={() => setF({ title: '', region: 'US', category: 'economic', impact: 'medium', starts_at: toLocal(Date.now() + 86400000), forecast: '', previous: '' })}><I.PlusI size={16} />New event</Btn></div>
       <Card pad={false} className="overflow-hidden">
         {q.loading && !q.data ? <Loading /> : (q.data || []).length === 0 ? <Empty icon={I.CalendarI} title="No events" /> : (
           <div className="overflow-x-auto"><table className="w-full min-w-[720px]"><thead className="border-b border-line bg-canvas/60"><tr><th className={th}>When</th><th className={th}>Event</th><th className={th}>Region</th><th className={th}>Impact</th><th className={th}>Forecast</th><th className={th}>Previous</th><th className={th} /></tr></thead>
@@ -126,7 +126,7 @@ function Events() {
             <Field label="Date and time"><Input type="datetime-local" value={f.starts_at} onChange={(e) => setF({ ...f, starts_at: e.target.value })} /></Field>
             <Field label="Region"><Input value={f.region} onChange={(e) => setF({ ...f, region: e.target.value })} maxLength={12} /></Field>
             <Field label="Impact"><Select value={f.impact} onChange={(e) => setF({ ...f, impact: e.target.value })}><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></Select></Field>
-            <div />
+            <Field label="Calendar"><Select value={f.category || 'economic'} onChange={(e) => setF({ ...f, category: e.target.value })}><option value="economic">Economic release</option><option value="earnings">Company earnings</option></Select></Field>
             <Field label="Forecast"><Input value={f.forecast} onChange={(e) => setF({ ...f, forecast: e.target.value })} /></Field>
             <Field label="Previous"><Input value={f.previous} onChange={(e) => setF({ ...f, previous: e.target.value })} /></Field>
           </div>

@@ -1,12 +1,17 @@
 // A tiny, dependency-free Supabase client (Auth + PostgREST + Storage + Functions).
 import { SUPABASE_URL as URL_, SUPABASE_KEY as KEY } from './config'
+import { BRAND } from '../brand'
 
-const STORE = 'finvero.session'
+const STORE = BRAND.storage.session
+const LEGACY_STORE = 'finvero.session' // sessions created before the EQOTO rename
 const listeners = new Set()
 let session = read()
 
 function read() {
   try {
+    const old = localStorage.getItem(LEGACY_STORE)
+    if (old && !localStorage.getItem(STORE)) localStorage.setItem(STORE, old)
+    localStorage.removeItem(LEGACY_STORE)
     return JSON.parse(localStorage.getItem(STORE))
   } catch {
     return null

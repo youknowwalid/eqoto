@@ -1,7 +1,7 @@
 import { Reveal, SectionTitle } from './ui'
 import { LandmarkIcon, LockIcon, ShieldCheckIcon } from './Icons'
 import { PartnerLogo } from './Marks'
-import { trust, partners } from '../content'
+import { trust } from '../content'
 
 const icons = { bank: LandmarkIcon, lock: LockIcon, shield: ShieldCheckIcon }
 
@@ -41,30 +41,6 @@ export function Trust() {
           )
         })}
       </div>
-    </section>
-  )
-}
-
-export function Partners() {
-  return (
-    <section aria-labelledby="partners-title" className="bg-[#121311] px-4 py-14 sm:px-6 sm:py-[50px]">
-      <Reveal>
-        <h2
-          id="partners-title"
-          className="mx-auto max-w-[740px] text-center text-[34px] font-bold leading-[1.04] tracking-[-0.045em] text-cream sm:text-[48px] sm:leading-[50px]"
-        >
-          {partners.title}
-        </h2>
-      </Reveal>
-      <Reveal delay={100}>
-        <ul className="mx-auto mt-10 flex max-w-[1340px] flex-wrap items-center justify-center gap-x-10 gap-y-8 sm:mt-[48px] lg:flex-nowrap lg:gap-x-9 xl:gap-x-11">
-          {partners.logos.map((k) => (
-            <li key={k} className="flex h-[52px] items-center opacity-95 transition hover:opacity-100">
-              <PartnerLogo kind={k} />
-            </li>
-          ))}
-        </ul>
-      </Reveal>
     </section>
   )
 }

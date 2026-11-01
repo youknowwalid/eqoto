@@ -1,4 +1,4 @@
-// The Finvero brand mark: a green rising-V symbol followed by the wordmark.
+// The EQOTO brand mark: a green rising-V symbol followed by the wordmark.
 // Original artwork — easy to swap for your final logo later.
 
 export function LogoMark({ size = 30, className = '' }) {
@@ -17,12 +17,12 @@ export default function Logo({ className = '', size = 'md', href = '#top' }) {
   return (
     <a
       href={href}
-      aria-label="Finvero home"
+      aria-label="EQOTO home"
       className={`inline-flex items-center gap-2 text-neon focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neon ${className}`}
     >
       <LogoMark size={mark} />
       <span className={`${text} font-bold leading-none tracking-[-0.04em] text-neon`}>
-        Finvero<span className="text-cream">.</span>
+        EQOTO<span className="text-cream">.</span>
       </span>
     </a>
   )

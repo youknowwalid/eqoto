@@ -42,7 +42,7 @@ export function MarketsAdmin() {
   }
   return (
     <>
-      <PageHead title="Markets" sub="Prices on Finvero are simulated. You control them here." action={<Btn onClick={() => setAdd(true)}><I.PlusI size={16} />Add instrument</Btn>} />
+      <PageHead title="Markets" sub="Prices on EQOTO are simulated unless an instrument is switched to a licensed feed. Simulated prices are set here." action={<Btn onClick={() => setAdd(true)}><I.PlusI size={16} />Add instrument</Btn>} />
       <Card className="mb-5">
         <CardTitle title="Market shock" sub="Move every instrument at once, useful for demos and stress tests." />
         <div className="flex flex-wrap items-center gap-2">{[-10, -5, -2, 2, 5, 10].map((p) => <Btn key={p} size="sm" variant={p < 0 ? 'secondary' : 'soft'} disabled={busy === 'shock'} onClick={() => runShock(p)}>{p > 0 ? '+' : ''}{p}%</Btn>)}
@@ -51,16 +51,17 @@ export function MarketsAdmin() {
       <Card pad={false} className="overflow-hidden">
         <div className="flex flex-wrap items-center gap-3 border-b border-line p-4"><Input className="min-w-[200px] flex-1" placeholder="Search symbol or name" value={qs} onChange={(e) => setQs(e.target.value)} aria-label="Search" /><Tabs tabs={[{ value: 'all', label: 'All' }, { value: 'stock', label: 'Stocks' }, { value: 'etf', label: 'ETFs' }, { value: 'crypto', label: 'Crypto' }]} value={kind} onChange={setKind} /></div>
         {q.loading && !q.data ? <Loading /> : (
-          <div className="overflow-x-auto"><table className="w-full min-w-[820px]"><thead className="border-b border-line bg-canvas/60"><tr><th className={th}>Instrument</th><th className={th}>Type</th><th className={th}>Price</th><th className={th}>Today</th><th className={th}>Trading</th><th className={th}>Featured</th><th className={th} /></tr></thead>
+          <div className="overflow-x-auto"><table className="w-full min-w-[820px]"><thead className="border-b border-line bg-canvas/60"><tr><th className={th}>Instrument</th><th className={th}>Type</th><th className={th}>Source</th><th className={th}>Price</th><th className={th}>Today</th><th className={th}>Trading</th><th className={th}>Featured</th><th className={th} /></tr></thead>
             <tbody className="divide-y divide-line">{rows.map((i) => (
               <tr key={i.symbol}>
                 <td className={td}><div className="flex items-center gap-3"><InstrumentMark symbol={i.symbol} size={32} /><div><p className="font-semibold">{i.symbol}</p><p className="text-[12.5px] text-soft">{i.name}</p></div></div></td>
                 <td className={cx(td, 'capitalize')}>{i.kind}</td>
+                <td className={td}><Badge tone={i.data_source === 'licensed' ? 'green' : 'amber'}>{i.data_source === 'licensed' ? 'Licensed feed' : 'Simulated'}</Badge></td>
                 <td className={cx(td, 'font-semibold tabular-nums')}>{price(i.price)}</td>
                 <td className={td}><Chg value={Number(i.prev_close) ? ((i.price - i.prev_close) / i.prev_close) * 100 : 0} /></td>
                 <td className={td}><Toggle checked={i.trading_enabled} onChange={(v) => flip(i, { trading_enabled: v })} label={`Trading ${i.symbol}`} /></td>
                 <td className={td}><Toggle checked={i.featured} onChange={(v) => flip(i, { featured: v })} label={`Feature ${i.symbol}`} /></td>
-                <td className={td}><Btn size="sm" variant="secondary" onClick={() => setEdit(i)}>Set price</Btn></td>
+                <td className={td}><Btn size="sm" variant="secondary" disabled={i.data_source === 'licensed'} onClick={() => setEdit(i)}>Set price</Btn></td>
               </tr>
             ))}</tbody></table></div>
         )}

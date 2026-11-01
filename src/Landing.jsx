@@ -5,9 +5,8 @@ import Fees from './components/Fees'
 import Markets from './components/Markets'
 import Investors from './components/Investors'
 import Intelligence from './components/Intelligence'
-import { Trust, Partners } from './components/Trust'
+import { Trust } from './components/Trust'
 import CtaBand from './components/CtaBand'
-import Sponsors from './components/Sponsors'
 import Footer from './components/Footer'
 import Accessibility from './components/Accessibility'
 
@@ -30,9 +29,7 @@ export default function Landing() {
         <Investors />
         <Intelligence />
         <Trust />
-        <Partners />
         <CtaBand />
-        <Sponsors />
       </main>
       <Footer />
       <Accessibility />
