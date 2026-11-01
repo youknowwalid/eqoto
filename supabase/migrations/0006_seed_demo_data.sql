@@ -16,6 +16,7 @@ insert into public.instruments (symbol, name, kind, sector, exchange, price, pre
  ('ORBT','Orbit Token','crypto','Digital assets','EQOTO Sim',96.28,97.60,0.0060),
  ('HELX','Helix Network','crypto','Digital assets','EQOTO Sim',14.07,13.94,0.0065)
 on conflict (symbol) do nothing;
+update public.instruments set featured = true where symbol in ('NOVA','MRDN','WRLD','LUMN') and not exists (select 1 from public.instruments where featured);
 
 insert into public.investors (kind, name, handle, look, country, bio, risk, return_24m, followers, copiers, verified, featured, volatility) values
  ('investor','Maren Halvorsen','maren_h',0,'Norway','Investment director with 9+ years of experience. Quality growth, low turnover.',4,35.38,495,0,true,true,0.0012),

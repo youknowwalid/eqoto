@@ -163,7 +163,7 @@ function Trading() {
   return (
     <Card>
       <ToggleRow title="Confirm before placing orders" text="Show a review step every time." checked={s.confirm_orders !== false} onChange={(v) => set({ confirm_orders: v })} />
-      <ToggleRow title="Start on the demo account" text="Open Finvero in the virtual account after you sign in." checked={s.start_demo} onChange={(v) => set({ start_demo: v })} />
+      <ToggleRow title="Start on the demo account" text="Open EQOTO in the virtual account after you sign in." checked={s.start_demo} onChange={(v) => set({ start_demo: v })} />
       <ToggleRow title="Show prices with full precision" text="Four decimals instead of two on low-priced assets." checked={s.precise} onChange={(v) => set({ precise: v })} />
       <div className="grid gap-4 pt-5 sm:grid-cols-2">
         <Field label="Default order amount (USD)"><Input type="number" min="1" defaultValue={s.default_amount || 250} onBlur={(e) => set({ default_amount: Math.max(1, Number(e.target.value) || 250) }, 'Default amount saved')} /></Field>
@@ -204,7 +204,7 @@ function Privacy() {
         db.from('copies').select('*'),
         db.from('watchlist').select('*'),
       ])
-      download('finvero-my-data.json', JSON.stringify({ exported_at: new Date().toISOString(), profile, accounts, transactions: tx, positions, copies, watchlist: watch }, null, 2), 'application/json')
+      download('eqoto-my-data.json', JSON.stringify({ exported_at: new Date().toISOString(), profile, accounts, transactions: tx, positions, copies, watchlist: watch }, null, 2), 'application/json')
     } catch (e) {
       ui.err(e)
     }
@@ -242,9 +242,10 @@ function Recurring() {
   const run = async (p) => {
     setBusy(p.id)
     try {
-      await rpc('place_order', { p_account: account.id, p_symbol: p.symbol, p_side: 'buy', p_amount: p.amount })
-      await set({ recurring: plans.map((x) => (x.id === p.id ? { ...x, last_run: new Date().toISOString() } : x)) })
+      const r = await rpc('place_order', { p_account: account.id, p_symbol: p.symbol, p_side: 'buy', p_amount: p.amount, p_idempotency_key: crypto.randomUUID() })
       await refresh()
+      if (r?.status !== 'filled') return ui.err(`Order rejected: ${r?.reason || 'unknown reason'}`)
+      await set({ recurring: plans.map((x) => (x.id === p.id ? { ...x, last_run: new Date().toISOString() } : x)) })
       ui.ok(`Bought ${money(p.amount)} of ${p.symbol} on your ${kind === 'demo' ? 'demo' : 'main'} account`)
     } catch (e) {
       ui.err(e)

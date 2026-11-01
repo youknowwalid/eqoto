@@ -30,7 +30,7 @@ language plpgsql security definer set search_path = public as $$
 declare got int;
 begin
   if auth.uid() is null then return; end if;
-  update public.platform_settings set last_tick_at = now() where id = 1 and last_tick_at < now() - interval '40 seconds';
+  update public.platform_settings set last_tick = now() where id = 1 and last_tick < now() - interval '40 seconds';
   get diagnostics got = row_count;
   if got = 0 then return; end if;
   update public.instruments set

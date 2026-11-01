@@ -18,12 +18,12 @@ create table if not exists public.platform_settings (
   demo_start_balance numeric(14,2) not null default 100000 check (demo_start_balance >= 0),
   trading_enabled boolean not null default true,
   signups_enabled boolean not null default true,
-  last_tick_at timestamptz not null default 'epoch',
+  last_tick timestamptz not null default 'epoch',
   updated_at timestamptz not null default now()
 );
 alter table public.platform_settings add column if not exists max_order numeric(14,2) not null default 250000;
 alter table public.platform_settings add column if not exists demo_start_balance numeric(14,2) not null default 100000;
-alter table public.platform_settings add column if not exists last_tick_at timestamptz not null default 'epoch';
+alter table public.platform_settings add column if not exists last_tick timestamptz not null default 'epoch';
 insert into public.platform_settings (id) values (1) on conflict do nothing;
 
 -- ───────────── profiles / accounts ─────────────
@@ -116,6 +116,7 @@ create table if not exists public.instruments (
   prev_close numeric(18,6) not null check (prev_close > 0),
   volatility numeric(8,5) not null default 0.002,
   trading_enabled boolean not null default true,
+  featured boolean not null default false,
   data_source text not null default 'simulated' check (data_source in ('simulated','licensed')),
   quote_at timestamptz not null default now(),
   created_at timestamptz not null default now()
@@ -124,6 +125,7 @@ alter table public.instruments add column if not exists volatility numeric(8,5) 
 alter table public.instruments add column if not exists data_source text not null default 'simulated';
 alter table public.instruments add column if not exists quote_at timestamptz not null default now();
 alter table public.instruments add column if not exists exchange text not null default 'EQOTO Sim';
+alter table public.instruments add column if not exists featured boolean not null default false;
 
 create table if not exists public.price_history (
   id bigint generated always as identity primary key,

@@ -91,8 +91,8 @@ create trigger instrument_audit after insert or update on public.instruments for
 create or replace function public.settings_audit() returns trigger language plpgsql security definer set search_path = public as $$
 begin
   new.updated_at := now();
-  if auth.uid() is not null and (to_jsonb(new) - 'last_tick_at' - 'updated_at') is distinct from (to_jsonb(old) - 'last_tick_at' - 'updated_at') then
-    perform public.audit('settings.update', 'platform_settings', to_jsonb(new) - 'last_tick_at');
+  if auth.uid() is not null and (to_jsonb(new) - 'last_tick' - 'updated_at') is distinct from (to_jsonb(old) - 'last_tick' - 'updated_at') then
+    perform public.audit('settings.update', 'platform_settings', to_jsonb(new) - 'last_tick');
   end if;
   return new;
 end $$;

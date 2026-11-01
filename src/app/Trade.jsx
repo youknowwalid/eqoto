@@ -1,10 +1,10 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { db, rpc } from '../lib/supabase'
 import { loadHistory, useAuth, useMarket, useQuery, useUi } from '../lib/store'
 import { cx, money, pct, price, units } from '../lib/format'
 import { Badge, Btn, Drawer, Field, Input, Tabs } from './ui'
 import { LineChart } from './charts'
-import { InstrumentMark } from './shared'
+import { InstrumentMark, SourceBadge } from './shared'
 import { StarI } from './icons'
 
 const TradeCtx = createContext({ open: () => {} })
@@ -23,7 +23,8 @@ export function TradeProvider({ children }) {
 
 function TradeDrawer({ symbol, onClose }) {
   const { by, change, refresh: refreshMarket } = useMarket()
-  const { account, kind, user, refresh } = useAuth()
+  const { account, kind, user, profile, refresh } = useAuth()
+  const idem = useRef(null)
   const ui = useUi()
   const ins = by[symbol]
   const [range, setRange] = useState('1M')
@@ -53,10 +54,15 @@ function TradeDrawer({ symbol, onClose }) {
   const estUnits = amt / Number(ins.price)
 
   const submit = async () => {
+    if (profile?.settings?.confirm_orders !== false && !(await ui.confirm({ title: `${side === 'buy' ? 'Buy' : 'Sell'} ${symbol}?`, message: `${money(amt)} at ${price(ins.price)} (${ins.data_source === 'licensed' ? 'licensed feed' : 'simulated price'}), paper trade on your ${kind === 'demo' ? 'demo' : 'main'} account.${fee ? ` Fee ${money(fee)}.` : ''}`, confirmText: side === 'buy' ? 'Buy' : 'Sell' }))) return
     setBusy(true)
+    // One key per order attempt: a retry after a network failure reuses it, so the server can never fill it twice.
+    idem.current ||= crypto.randomUUID()
     try {
-      await rpc('place_order', { p_account: account.id, p_symbol: symbol, p_side: side, p_amount: amt })
-      ui.ok(`${side === 'buy' ? 'Bought' : 'Sold'} ${money(amt)} of ${symbol}`)
+      const r = await rpc('place_order', { p_account: account.id, p_symbol: symbol, p_side: side, p_amount: amt, p_idempotency_key: idem.current })
+      idem.current = null
+      if (r?.status === 'filled') ui.ok(`${side === 'buy' ? 'Bought' : 'Sold'} ${units(r.units)} ${symbol} for ${money(amt)}${r.duplicate ? ' (already placed)' : ''}`)
+      else ui.err(`Order rejected: ${r?.reason || 'unknown reason'}`)
       await Promise.all([refresh(), pos.reload(), refreshMarket()])
     } catch (e) {
       ui.err(e)
@@ -80,7 +86,7 @@ function TradeDrawer({ symbol, onClose }) {
         <InstrumentMark symbol={symbol} size={46} />
         <div>
           <p className="text-[28px] font-semibold tabular-nums text-fg">{price(ins.price)}</p>
-          <p className={cx('text-[14px] font-semibold', c >= 0 ? 'text-[#13a24d]' : 'text-[#e5484d]')}>{pct(c)} today</p>
+          <p className={cx('flex items-center gap-2 text-[14px] font-semibold', c >= 0 ? 'text-[#13a24d]' : 'text-[#e5484d]')}>{pct(c)} today <SourceBadge ins={ins} /></p>
         </div>
         <button onClick={toggleWatch} aria-label={wl.data ? 'Remove from watchlist' : 'Add to watchlist'} className={cx('ml-auto grid h-10 w-10 place-items-center rounded-full border border-line', wl.data ? 'bg-[#fff4d6] text-[#d99a00]' : 'text-soft hover:bg-canvas')}>
           <StarI size={19} className={wl.data ? 'fill-current' : ''} />
@@ -92,7 +98,7 @@ function TradeDrawer({ symbol, onClose }) {
       {pos.data && (
         <div className="mt-3 flex items-center justify-between rounded-lg bg-canvas px-4 py-3 text-[13.5px]">
           <span className="text-soft">Your position</span>
-          <span className="font-semibold text-fg">{units(pos.data.units)} units · {money(holding)}</span>
+          <span className="font-semibold text-fg">{units(pos.data.units)} units · {money(holding)} <span className={cx('ml-1', holding - pos.data.units * pos.data.avg_price >= 0 ? 'text-[#13a24d]' : 'text-[#e5484d]')}>({pct(((Number(ins.price) - Number(pos.data.avg_price)) / Number(pos.data.avg_price)) * 100)} vs avg {price(pos.data.avg_price)})</span></span>
         </div>
       )}
 
@@ -112,11 +118,12 @@ function TradeDrawer({ symbol, onClose }) {
         <dl className="mt-4 space-y-1.5 text-[13.5px]">
           <div className="flex justify-between"><dt className="text-soft">Estimated units</dt><dd className="font-medium tabular-nums text-fg">{amt > 0 ? units(estUnits) : '—'}</dd></div>
           <div className="flex justify-between"><dt className="text-soft">Fee</dt><dd className="font-medium tabular-nums text-fg">{fee ? money(fee) : 'Free'}</dd></div>
-          <div className="flex justify-between"><dt className="text-soft">Account</dt><dd><Badge tone={kind === 'demo' ? 'violet' : 'green'}>{kind === 'demo' ? 'Demo' : 'Real'} · {money(account?.balance)}</Badge></dd></div>
+          <div className="flex justify-between"><dt className="text-soft">Account</dt><dd><Badge tone={kind === 'demo' ? 'violet' : 'green'}>{kind === 'demo' ? 'Demo' : 'Main'} · {money(account?.balance)}</Badge></dd></div>
         </dl>
         <Btn className={cx('mt-4 w-full', side === 'sell' && '!bg-[#e5484d] hover:!bg-[#cc3e43]')} size="lg" loading={busy} disabled={!ins.trading_enabled || amt < 1} onClick={submit}>
           {ins.trading_enabled ? `${side === 'buy' ? 'Buy' : 'Sell'} ${symbol}` : 'Trading halted'}
         </Btn>
+        <p className="mt-3 text-[12px] leading-relaxed text-soft">Paper trade with simulated funds. {ins.data_source === 'licensed' ? 'Quote from a licensed feed; no order is sent to a broker.' : 'The price is generated by EQOTO and is not a live market quote.'}</p>
       </div>
     </Drawer>
   )
